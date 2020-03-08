@@ -41,7 +41,6 @@ class MaDataProcessor:
 
     # Print out all the record that match the criteria
     def process_match_record(self):
-        workbook = None
         if self.table:
             self.initialize_worksheet()
             for record in self.table:
