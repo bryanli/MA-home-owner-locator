@@ -1,4 +1,10 @@
 from dbfread import DBF                      # For parsing dbf file
+import xlsxwriter                            # For writing to xlsx file
+
+PROPERTY_ADDR_COLUMN = 0
+PROPERTY_VALUE_COLUMN = 1
+OWNER_NAMES_COLUMN = 2
+OWNER_ADDRESS_COLUMN = 3
 
 class MaDataProcessor:
     def __init__(self, options, dbfPath, matchDicPath = None):
@@ -15,10 +21,29 @@ class MaDataProcessor:
     def generate_match_name_set(self, dicPath):
         self.nameSet = set(line.strip().upper() for line in open(dicPath))
 
+    # Initialize the worksheet
+    def initialize_worksheet(self):
+        wbPath = self.options.town + ".xlsx"
+        self.workbook = xlsxwriter.Workbook(wbPath)
+        self.worksheet = self.workbook.add_worksheet()
+        # Write the header row
+        self.currentRow = 0
+        self.write_to_row("Property Address", "Total Value", "Owner Names", "Owner Address")
+
+    # Write entry to worksheet
+    def write_to_row(self, propertyAddress, price, owner, ownerAddress):
+        if self.worksheet:
+            self.worksheet.write(self.currentRow, PROPERTY_ADDR_COLUMN, propertyAddress)
+            self.worksheet.write(self.currentRow, PROPERTY_VALUE_COLUMN, price)
+            self.worksheet.write(self.currentRow, OWNER_NAMES_COLUMN, owner)
+            self.worksheet.write(self.currentRow, OWNER_ADDRESS_COLUMN, ownerAddress)
+            self.currentRow += 1
 
     # Print out all the record that match the criteria
-    def print_match_record(self):
+    def process_match_record(self):
+        workbook = None
         if self.table:
+            self.initialize_worksheet()
             for record in self.table:
                 owner = record['OWNER1']
                 price = record['TOTAL_VAL']
@@ -33,6 +58,10 @@ class MaDataProcessor:
                     ownerState = record['OWN_STATE']
                     ownerZip = record['OWN_ZIP']
                     ownerInfoStr = "{}, {}, {}, {}".format(ownerAddr, ownerCity, ownerState, ownerZip)
-                    print (propertyAddress + "\t\t" + str(price) + "\t\t" + owner + "\t\t" + ownerInfoStr)
+                    if self.options.display:
+                        print (propertyAddress + "\t\t" + str(price) + "\t\t" + owner + "\t\t" + ownerInfoStr)
+                    self.write_to_row(propertyAddress, price, owner, ownerInfoStr)
+            self.workbook.close()
+            print("%s.xlsx file generated." %self.options.town)
 
 

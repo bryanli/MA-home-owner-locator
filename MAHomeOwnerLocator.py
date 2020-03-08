@@ -1,5 +1,4 @@
 from collections import OrderedDict
-import xlsxwriter                            # For writing to xlsx file
 import xlrd                                  # For reading xlsx file
 from argparse import ArgumentParser          # For parsing command line arguments
 from argparse import RawTextHelpFormatter
@@ -21,10 +20,12 @@ def parse_options():
     parser = ArgumentParser(formatter_class=RawTextHelpFormatter)
     parser.add_argument('--min', type=int, help='The minimum property price to show', default=DEFAULT_MIN_VALUE)
     parser.add_argument('--includeland', default=False, help='Only show property that has structure value')
+    parser.add_argument('--display', default=False, help='Also print out the record to standard output')
     parser.add_argument('--town',type=str)
     parser.add_argument('--debug', default=False)
     options = parser.parse_args()
     options.debug = options.debug in ['True', 'true', True]
+    options.display = options.display in ['True', 'true', True]
     options.includeland = options.includeland in ['True', 'true', True]
     if options.town:
         options.town = options.town.upper()
@@ -62,7 +63,7 @@ def main():
     if assessFilePath:
         matchDictionaryPath = MATCH_DICTIONARY_DIRECTORY + "/PinYinWordList.txt"
         processor = MaDataProcessor(options, assessFilePath, matchDictionaryPath)
-        processor.print_match_record()
+        processor.process_match_record()
     else :
         print ("Failed to generate data fpr %s" %options.town)
 
