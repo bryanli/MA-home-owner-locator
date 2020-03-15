@@ -61,7 +61,7 @@ def main():
     assessFilePath = download_and_unzip_data(options.town, links[options.town][1])
 
     if assessFilePath:
-        matchDictionaryPath = MATCH_DICTIONARY_DIRECTORY + "/PinYinWordList.txt"
+        matchDictionaryPath = MATCH_DICTIONARY_DIRECTORY + "/FullPinYinWordList.txt"
         processor = MaDataProcessor(options, assessFilePath, matchDictionaryPath)
         processor.process_match_record()
     else :
