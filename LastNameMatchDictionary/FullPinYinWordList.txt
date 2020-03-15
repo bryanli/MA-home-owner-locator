@@ -7,7 +7,6 @@ bɑn
 bɑnɡ
 bɑo
 bei
-ben
 benɡ
 bi
 biɑn
@@ -58,7 +57,6 @@ dɑi
 dɑn
 dɑnɡ
 dɑo
-de
 den
 dei
 denɡ
@@ -204,7 +202,6 @@ nɑi
 nɑn
 nɑnɡ
 nɑo
-ne
 nei
 nen
 nenɡ
@@ -213,7 +210,6 @@ ni
 niɑn
 niɑnɡ
 niɑo
-nie
 nin
 ninɡ
 niu
@@ -260,7 +256,6 @@ qun
 rɑn
 rɑnɡ
 rɑo
-re
 ren
 renɡ
 ri
